@@ -29,6 +29,7 @@ Outer
 #code-block
 	```javascript=2
 	console.log('hello,\n world')
+	anotherline
 	```
 test
 

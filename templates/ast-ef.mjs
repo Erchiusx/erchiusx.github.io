@@ -165,12 +165,19 @@ const templates = {
         constructor( code, language, lineno ){
             lineno ??= 1;
             super({ $data: { language, lineno: lineno-1 } });
+            try {
             const highlighter = language ?
                 ( code => highlight( code, { language, ignoreIllegals: true } ) ) :
                 highlightAuto;
             const html = highlighter( code ).value;
             const lines = html.trimEnd().split( /\n/g );
             this.lines = lines.map( line => new codeline( line ) );
+            } catch {
+                this.lines = code
+                    .trimEnd()
+                    .split(/\n/g)
+                    .map( line => new codeline( line.trimEnd() ) );
+            }
         }
     },
     table: class extends (ef.t`
