@@ -1,0 +1,50 @@
+name: Build and Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # - name: Download latest release from github.com/some/project
+      #   run: |
+      #     set -e
+      #     LATEST_URL=$(curl -s https://api.github.com/repos/some/project/releases/latest | grep "browser_download_url" | cut -d '"' -f 4)
+      #     echo "Downloading from $LATEST_URL"
+      #     curl -L "$LATEST_URL" -o helper.tar.gz
+      #     mkdir helper && tar -xzf helper.tar.gz -C helper || unzip -q helper.tar.gz -d helper || true
+      #     ls -R helper
+
+      - name: Build site
+        run: |
+          make build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
