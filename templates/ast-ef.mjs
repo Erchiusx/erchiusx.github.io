@@ -139,12 +139,15 @@ const templates = {
         }
     },
     section: class extends (ef.t`
-        >div.title
-            >h2
-                +title
-            >span
-                .{{ time }}
-        +content
+        >section.title.block
+            >details
+                #open
+                >summary
+                    >h2
+                        +title
+                    >span
+                        .{{ time }}
+                +content
         `){
         constructor( title, content, time ){
             super({
