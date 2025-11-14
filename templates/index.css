@@ -40,7 +40,8 @@ body >nav a::before {
 }
 
 body >article {
-    width: 60%;
+    width: 65%;
+    padding-left: 5%;
 }
 
 html {
@@ -303,4 +304,8 @@ table td:last-child {
         padding: 0.5em 0.7em;
         font-size: 0.9em;
     }
+}
+
+* {
+    font-size: large;
 }
