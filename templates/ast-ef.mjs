@@ -2,8 +2,15 @@ import 'ef.js'
 import hljs from 'highlight.js';
 const { highlight, highlightAuto } = hljs;
 
-export function ASTnode2DOM_EF( ASTnode ){
-    switch( ASTnode.type ){
+const counter = {
+    count: 0,
+    next() {
+        return this.count++
+    }
+};
+
+export function ASTnode2DOM_EF(ASTnode) {
+    switch (ASTnode.type) {
         case "section":
             return new templates.section(
                 ASTnode.title,
@@ -12,20 +19,20 @@ export function ASTnode2DOM_EF( ASTnode ){
             )
         case "itemization":
         case "enumeration":
-            return new 
+            return new
                 templates[
-                    ASTnode.type
-                ]( ASTnode.items );
+                ASTnode.type
+                ](ASTnode.items);
         case "normal-item":
-            return new 
+            return new
                 templates[
-                    ASTnode.type
-                ]( ASTnode.title, ASTnode.content )
+                ASTnode.type
+                ](ASTnode.title, ASTnode.content)
         case "math":
             return new
                 templates[
-                    `${ ASTnode.mode }Math`
-                ]( ASTnode.content );
+                `${ASTnode.mode}Math`
+                ](ASTnode.content);
         case "figure":
             return new templates.figure(
                 ASTnode.caption,
@@ -42,10 +49,10 @@ export function ASTnode2DOM_EF( ASTnode ){
         case "italic":
         case "bold":
         case "underlined":
-            return new 
+            return new
                 templates[
-                    ASTnode.type
-                ]( ASTnode.content );
+                ASTnode.type
+                ](ASTnode.content);
         case "code-block":
             return new templates.code(
                 ASTnode.content,
@@ -66,7 +73,7 @@ const templates = {
         >span.plain.md
             .{{text}}
         `) {
-        constructor( text ){
+        constructor(text) {
             super({ $data: { text } });
         }
     },
@@ -79,9 +86,9 @@ const templates = {
         >p.md
             +content
         `) {
-        constructor( content ){
+        constructor(content) {
             super();
-            this.content = content.map( ASTnode2DOM_EF );
+            this.content = content.map(ASTnode2DOM_EF);
         }
     },
     figure: class extends (ef.t`
@@ -91,9 +98,9 @@ const templates = {
             >p.caption.md
                 +caption
         `) {
-        constructor( caption, path ){
-            super( { $data: { path } } );
-            this.caption = caption.content.map( ASTnode2DOM_EF );
+        constructor(caption, path) {
+            super({ $data: { path } });
+            this.caption = caption.content.map(ASTnode2DOM_EF);
         }
     },
     link: class extends (ef.t`
@@ -101,18 +108,18 @@ const templates = {
             #href = {{src}}
             +text
         `) {
-        constructor( text, src ){
-            super( { $data: { src } } );
-            this.text = text.content.map( ASTnode2DOM_EF );
+        constructor(text, src) {
+            super({ $data: { src } });
+            this.text = text.content.map(ASTnode2DOM_EF);
         }
     },
     itemization: class extends (ef.t`
         >ul.itemization
             +content
-        `){
-        constructor( content ){
+        `) {
+        constructor(content) {
             super();
-            this.content = content.map( ASTnode2DOM_EF );
+            this.content = content.map(ASTnode2DOM_EF);
         }
     },
     "normal-item": class extends (ef.t`
@@ -121,25 +128,26 @@ const templates = {
                 +title
             >div.item
                 +content
-        `){
-        constructor( title, content ){
+        `) {
+        constructor(title, content) {
             super();
-            this.title = ASTnode2DOM_EF( title ).content;
-            this.content = content.map( ASTnode2DOM_EF );
+            this.title = ASTnode2DOM_EF(title).content;
+            this.content = content.map(ASTnode2DOM_EF);
         }
     },
     "plain-item": class extends (ef.t`
         >li.plain
             >div.item
                 -content
-        `){
-        constructor( content ){
+        `) {
+        constructor(content) {
             super();
-            this.content = ASTnode2DOM_EF( content );
+            this.content = ASTnode2DOM_EF(content);
         }
     },
     section: class extends (ef.t`
         >section.title.block
+            #id={{link}}
             >details
                 #open
                 >summary
@@ -148,13 +156,17 @@ const templates = {
                     >span
                         .{{ time }}
                 +content
-        `){
-        constructor( title, content, time ){
+        `) {
+        constructor(title, content, time) {
             super({
-                $data: { time: time??"" }
+                $data: {
+                    time: time ?? "",
+                    link: counter.next()
+                }
             });
-            this.title = ASTnode2DOM_EF( title ).content
-            this.content = content.map( ASTnode2DOM_EF );
+            this.title = ASTnode2DOM_EF(title).content;
+            this.linkTitle = ASTnode2DOM_EF(title).content;
+            this.content = content.map(ASTnode2DOM_EF);
         }
     },
     code: class extends (ef.t`
@@ -164,22 +176,22 @@ const templates = {
             #style = counter-reset: line-number {{lineno}};
             >code
                 +lines
-        `){
-        constructor( code, language, lineno ){
+        `) {
+        constructor(code, language, lineno) {
             lineno ??= 1;
-            super({ $data: { language, lineno: lineno-1 } });
+            super({ $data: { language, lineno: lineno - 1 } });
             try {
-            const highlighter = language ?
-                ( code => highlight( code, { language, ignoreIllegals: true } ) ) :
-                highlightAuto;
-            const html = highlighter( code ).value;
-            const lines = html.trimEnd().split( /\n/g );
-            this.lines = lines.map( line => new codeline( line ) );
+                const highlighter = language ?
+                    (code => highlight(code, { language, ignoreIllegals: true })) :
+                    highlightAuto;
+                const html = highlighter(code).value;
+                const lines = html.trimEnd().split(/\n/g);
+                this.lines = lines.map((line) => new codeline(line));
             } catch {
                 this.lines = code
                     .trimEnd()
                     .split(/\n/g)
-                    .map( line => new codeline( line.trimEnd() ) );
+                    .map(line => new codeline(line.trimEnd()));
             }
         }
     },
@@ -189,8 +201,8 @@ const templates = {
                 +th
             >tbody
                 +tr
-        `){
-        constructor( header, body ){
+        `) {
+        constructor(header, body) {
             super();
             this.th = [new tablerow(header)];
             this.tr = body.map(x => new tablerow(x));
@@ -201,8 +213,8 @@ const templates = {
 class tablerow extends (ef.t`
 >tr
     +cells
-`){
-    constructor(row){
+`) {
+    constructor(row) {
         super();
         this.cells = row.map(tablecell);
     }
@@ -212,66 +224,66 @@ class tablerow extends (ef.t`
 class tableheadercell extends (ef.t`
 >th.{{align}}
     +content
-`){
-    constructor(cell){
-        console.log( cell );
+`) {
+    constructor(cell) {
+        console.log(cell);
         super({
             $data: {
                 align: cell.align
             }
         });
-        this.content = cell.content.content.map( ASTnode2DOM_EF );
+        this.content = cell.content.content.map(ASTnode2DOM_EF);
     }
 }
 
 class tablerowcell extends (ef.t`
 >td.{{align}}
     +content
-`){
-    constructor(cell){
-        console.log( cell );
+`) {
+    constructor(cell) {
+        console.log(cell);
         super({
             $data: {
                 align: cell.align
             }
         });
-        this.content = cell.content.content.map( ASTnode2DOM_EF );
+        this.content = cell.content.content.map(ASTnode2DOM_EF);
     }
 }
 
-function tablecell(cell){
+function tablecell(cell) {
     return new (cell.isHeader ? tableheadercell : tablerowcell)(cell)
 }
 
 class codeline extends (ef.t`
 >p.code#self
-`){
-    constructor( line ){
+`) {
+    constructor(line) {
         super();
         this.$refs.self.innerHTML = line;
     }
 }
 
-function emphasis( type ){
+function emphasis(type) {
     return class extends (ef.t`
-        >span.${ type }.md
+        >span.${type}.md
             >${type[0]}
                 +content
         `) {
-        constructor( { content } ){
+        constructor({ content }) {
             super();
-            this.content = content.map( ASTnode2DOM_EF );
+            this.content = content.map(ASTnode2DOM_EF);
         }
     }
 }
 
 import { render } from "katex";
 
-function math( mode ){
+function math(mode) {
     return class extends (ef.t`
         >span.math.${mode}.md#elem
         `) {
-        constructor( expression ){
+        constructor(expression) {
             super();
             render(
                 expression,
@@ -283,9 +295,27 @@ function math( mode ){
 }
 
 const containerd = ef.t`
->div
+>nav
+    +links
+>article
     +root
 `;
+
+const navlink = ef.t`
+>a.navlink
+    #href=#{{href}}
+    +linkTitle
+`
+
+export function sectionLink(sec) {
+    const href = sec.$data.link;
+    const {linkTitle} = sec;
+    const node = new navlink({
+        $data: { href }
+    });
+    node.linkTitle = linkTitle;
+    return node;
+}
 
 const container = new containerd();
 export {
