@@ -47,7 +47,7 @@
 body {
   font-optical-sizing: auto;
   hyphens: auto;
-  background-color: var(--background-color);
+  /* background-color: var(--background-color); */
 }
 
 pre,
