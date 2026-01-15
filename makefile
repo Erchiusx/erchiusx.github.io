@@ -14,7 +14,7 @@ parse: $(patsubst md/%.md,parsed/%.json,$(wildcard md/**/*.md)) $(patsubst md/%.
 parsed/%.json: md/%.md
 	@mkdir -p $$(dirname $@)
 	@touch $@
-	@/Volumes/erchiufs/Development/igem-markdown/dist-newstyle/build/aarch64-osx/ghc-9.12.2/igem-markdown-1.0.0.0/x/compiler/build/compiler/compiler $< > $@
+	@../igem-markdown/bindist/compiler $< > $@
 
 clean:
 	rm -rf .build

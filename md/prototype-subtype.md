@@ -1,0 +1,15 @@
+# The Prototype mechanism is subtyping done right
+
+Subtyping Polomorphism has been a controversial topic in programming languages for decades. Measured against other forms of polymorphism, subtyping has often been found wanting. It is often said that subtyping is not "true" polymorphism, or that it is "unsafe", or that it leads to "fragile" code.
+
+The formation of this sight of view is rooted in the design of subtyping rules. In fact, most mainstream languages with subtyping polymorphism do implement it as an add-on to their existing type systems, and mixes it with inheritance, which leads to a number of well-known problems.
+
+However, as a type relationship, subtyping is much too complecated, while still not flexible enough. Many do compare subtyping to parametric polymorphism together with ad-hoc polymorphism, which is often implemented via type classes or interfaces. Readers may witness that it is always easy to tell whether or not a typeclass instance exists for a given type, while subtyping relationships are often hard to determine, and may even change depending on the context.
+
+The problems come from the fact that subtyping is often mixed with inheritance, and is often implemented as an afterthought. In reality, subtyping is a fundamental type relationship that should be treated first-class in the type system.
+
+# The impact of Prototype onto subtyping and inheritance
+
+# How Prototype addresses the mixture of subtyping and inheritance
+
+TBD
