@@ -2,9 +2,9 @@
 
 I am a master's student in Data Science and Machine Learning at the National University of Singapore (NUS). I received my B.S. in Mathematics and Applied Mathematics from the School of the Gifted Young at the University of Science and Technology of China (USTC).
 
-My research interests lie at the intersection of programming languages, formal methods, software engineering, and agentic systems. I am particularly interested in principled techniques for representing, analyzing, verifying, and improving the reliability of complex software and AI agents.
+My research interests lie at the intersection of programming languages, formal methods, software engineering, and agentic systems. I am particularly interested in principled techniques for analyzing, verifying, and improving the reliability of software and agentic systems.
 
-I am currently working with Prof. Chengpeng Wang on the representation and parallelizability analysis of agent skills. I have also worked with Prof. Ilya Sergey on formal verification of distributed protocols using Veil in Lean 4.
+I am currently working with Prof. Chengpeng Wang on the representation, parallelizability analysis, and runtime scheduling of agent skills. I have also worked with Prof. Ilya Sergey on formal verification of distributed protocols using Veil in Lean 4.
 
 [CV](/Zeyue_Jia_CV.pdf) | [GitHub](https://github.com/Erchiusx) | [Email](mailto:zeyue_jia@u.nus.edu)
 
