@@ -1,9 +1,11 @@
 .PHONY: parse build clean
 
 build: parse
+	@rm -rf .build/ast
 	@-mkdir -p .build
 	@cp templates/* .build
-	@cp -r parsed .build/ast
+	@cp -R parsed .build/ast
+	@cp -R static/. .build/
 	@echo site generated
 
 parse: $(patsubst md/%.md,parsed/%.json,$(wildcard md/**/*.md)) $(patsubst md/%.md,parsed/%.json,$(wildcard md/*.md))
