@@ -10,27 +10,21 @@ I am currently working with Prof. Chengpeng Wang on the representation and paral
 
 # Research
 
-**Representation and Parallelizability Analysis of Agent Skills**
+^Representation and Parallelizability Analysis of Agent Skills^
 — with Prof. Chengpeng Wang, 2026–present.
-
 We are developing structured representations of agent skills to capture their internal steps and dependencies. Based on these representations, we are exploring automatic parallelization and runtime scheduling of skill steps while preserving their intended semantics.
-
-**Formal Verification of Distributed Protocols**
+^Formal Verification of Distributed Protocols^
 — with Prof. Ilya Sergey, 2026.
-
 I used Veil, a verification framework in Lean 4 developed by Prof. Sergey's group, to formalize distributed protocol models and verify inductive invariants for their safety properties.
-
-**LLM-Assisted Theorem Proving**
+^LLM-Assisted Theorem Proving^
 — undergraduate thesis, 2024–2025.
-
 I developed an LLM-assisted theorem-proving framework based on MantLe, a formal intermediate language for mathematical reasoning. The project also explored the interaction between LLM agents and the compiler, using compiler generated info as a feedback for the LLM agents.
-
 
 # Open Source
 
-**MoonBit.**
+^MoonBit.^
 I contribute to the MoonBit language core repository, with accepted contributions on performance and consistency issues. I have also worked on the design and compiler implementation of a template language feature.
 
-**GHCup Mirror at USTC.**
+^GHCup Mirror at USTC.^
 I maintain GHCup mirror infrastructure at the USTC Open Source Software Mirror Site, including compiler-channel synchronization and bootstrap support.
 
