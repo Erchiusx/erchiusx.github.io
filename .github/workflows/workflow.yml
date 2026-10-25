@@ -42,7 +42,6 @@ jobs:
       - name: Build Markdown parser
         working-directory: .tools/erchiusx-markdown
         run: |
-          cabal update
           cabal build compiler
           mkdir -p ../bin
           cp "$(cabal list-bin compiler)" ../bin/compiler
