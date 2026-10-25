@@ -19,18 +19,36 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      # - name: Download latest release from github.com/some/project
-      #   run: |
-      #     set -e
-      #     LATEST_URL=$(curl -s https://api.github.com/repos/some/project/releases/latest | grep "browser_download_url" | cut -d '"' -f 4)
-      #     echo "Downloading from $LATEST_URL"
-      #     curl -L "$LATEST_URL" -o helper.tar.gz
-      #     mkdir helper && tar -xzf helper.tar.gz -C helper || unzip -q helper.tar.gz -d helper || true
-      #     ls -R helper
+      - name: Checkout Markdown parser
+        uses: actions/checkout@v4
+        with:
+          repository: Erchiusx/ErchiusxMarkdown
+          ref: personal
+          path: .tools/erchiusx-markdown
+          persist-credentials: false
+
+      - name: Set up Haskell
+        uses: haskell-actions/setup@v2
+        with:
+          ghc-version: '9.12.2'
+          cabal-version: '3.14.2.0'
+
+      - name: Cache Cabal dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cabal/store
+          key: ${{ runner.os }}-ghc-9.12.2-cabal-${{ hashFiles('.tools/erchiusx-markdown/erchiusx-markdown.cabal', '.tools/erchiusx-markdown/cabal.project') }}
+
+      - name: Build Markdown parser
+        working-directory: .tools/erchiusx-markdown
+        run: |
+          cabal update
+          cabal build compiler
+          mkdir -p ../bin
+          cp "$(cabal list-bin compiler)" ../bin/compiler
 
       - name: Build site
-        run: |
-          make build
+        run: make build PARSER=.tools/bin/compiler
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

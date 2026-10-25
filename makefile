@@ -1,23 +1,25 @@
-.PHONY: parse build clean
+SHELL := /bin/bash
+PARSER ?= ../igem-markdown/bindist/compiler
+
+.PHONY: build parse clean
 
 build: parse
-	@rm -rf .build/ast
-	@-mkdir -p .build
-	@cp templates/* .build
-	@cp -R parsed .build/ast
+	@cp templates/* .build/
 	@cp -R static/. .build/
 	@echo site generated
 
-parse: $(patsubst md/%.md,parsed/%.json,$(wildcard md/**/*.md)) $(patsubst md/%.md,parsed/%.json,$(wildcard md/*.md))
-	@echo detected markdown files: $^
-	@echo all markdown files parsed, ast generated as json
-
-
-parsed/%.json: md/%.md
-	@mkdir -p $$(dirname $@)
-	@touch $@
-	@../igem-markdown/bindist/compiler $< > $@
+parse:
+	@set -euo pipefail; \
+	  rm -rf .build/ast; \
+	  mkdir -p .build/ast; \
+	  find md -type f -name '*.md' -print0 | while IFS= read -r -d '' source; do \
+	    target=".build/ast/$${source#md/}"; \
+	    target="$${target%.md}.json"; \
+	    mkdir -p "$$(dirname "$$target")"; \
+	    "$(PARSER)" "$$source" > "$$target"; \
+	    python3 -m json.tool "$$target" > /dev/null; \
+	    echo "parsed $$source"; \
+	  done
 
 clean:
 	rm -rf .build
-	rm -rf parsed
