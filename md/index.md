@@ -4,15 +4,15 @@ I am a master's student in Data Science and Machine Learning at the National Uni
 
 My research interests lie at the intersection of programming languages, formal methods, software engineering, and agentic systems. I am particularly interested in principled techniques for analyzing, verifying, and improving the reliability of software and agentic systems.
 
-I am currently working with Prof. Chengpeng Wang on the representation, parallelizability analysis, and runtime scheduling of agent skills. I have also worked with Prof. Ilya Sergey on formal verification of distributed protocols using Veil in Lean 4.
+I am currently working with Prof. Chengpeng Wang on structured representation and analysis of agent skills, including runtime scheduling and routing for optimized execution. I have also worked with Prof. Ilya Sergey on formal verification of distributed protocols using Veil in Lean 4.
 
 [CV](/Zeyue_Jia_CV.pdf) | [GitHub](https://github.com/Erchiusx) | [Email](mailto:zeyue_jia@u.nus.edu)
 
 # Research
 
-^Representation and Parallelizability Analysis of Agent Skills^
+^Structured Representation and Analysis of Agent Skills^
 — with Prof. Chengpeng Wang, 2026–present.
-We are developing structured representations of agent skills to capture their internal steps and dependencies. Based on these representations, we are exploring automatic parallelization and runtime scheduling of skill steps while preserving their intended semantics.
+We are developing structured representations of agent skills to expose intermediate steps, inter-step dependencies, and semantic constraints for programmatic analysis. I have implemented execution and profiling mechanics for the structured representation and am designing runtime scheduling and routing techniques for optimized skill execution.
 ^Formal Verification of Distributed Protocols^
 — with Prof. Ilya Sergey, 2026.
 I used Veil, a verification framework in Lean 4 developed by Prof. Sergey's group, to formalize distributed protocol models and verify inductive invariants for their safety properties.
